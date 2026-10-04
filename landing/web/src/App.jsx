@@ -5,6 +5,9 @@ import Rail from './components/Rail.jsx';
 export default function App() {
   return (
     <div className="app">
+      <div className="ambient-blob blob-a" aria-hidden="true" />
+      <div className="ambient-blob blob-b" aria-hidden="true" />
+
       <div className="topnav">
         <div className="brand">
           <img src="/alien-logo.png" alt="" className="brand-icon" />
@@ -17,7 +20,7 @@ export default function App() {
           className="cta-pill"
         >
           <img src="/x-logo.png" alt="" className="cta-icon" />
-          ↗
+          <span className="arrow">↗</span>
         </a>
       </div>
 
