@@ -24,6 +24,20 @@ export default function App() {
         </a>
       </div>
 
+      <section className="hero">
+        <div className="eyebrow">
+          <span className="eyebrow-bars" aria-hidden="true">|||</span>
+          alien dictionary · plain mode
+        </div>
+        <h1 className="headline">
+          <em>Speak</em> alien.
+        </h1>
+        <p className="subhead">
+          Dictionary-based translation between English and zib zib. No AI, no
+          invented words — just a straight lookup, both directions.
+        </p>
+      </section>
+
       <div className="main">
         <TextPanel />
         <TweetPanel />
@@ -31,8 +45,11 @@ export default function App() {
       </div>
 
       <footer>
-        <div>zib zib · plain mode</div>
-        <div>dictionary lookup only</div>
+        <div className="footer-wordmark" aria-hidden="true">ZIB ZIB</div>
+        <div className="footer-row">
+          <div>zib zib · plain mode</div>
+          <div>dictionary lookup only</div>
+        </div>
       </footer>
     </div>
   );
