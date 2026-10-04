@@ -241,8 +241,8 @@ a { color: inherit; text-decoration: none; }
 
 .panel {
   position: relative;
-  width: 300px;
-  height: 340px;
+  width: 335px;
+  height: 375px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -306,7 +306,27 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 16px rgba(61, 220, 132, 0.22));
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  filter: grayscale(1) brightness(1.5) contrast(1.05)
+    drop-shadow(0 0 20px rgba(61, 220, 132, 0.3));
+}
+.alien-speaker::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--green);
+  mix-blend-mode: color;
+  opacity: 0.75;
+  pointer-events: none;
+  -webkit-mask-image: url('/alien-photo.png');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url('/alien-photo.png');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
 }
 .alien-mouth {
   position: absolute;
@@ -330,8 +350,8 @@ a { color: inherit; text-decoration: none; }
   to { transform: translateY(-2px); }
 }
 .alien-speaker--big {
-  width: 127px;
-  height: 276px;
+  width: 170px;
+  height: 370px;
 }
 
 /* ---- segmented toggle switch ---- */
@@ -456,8 +476,8 @@ input[type=text] { flex: 0 0 auto; }
 
 /* ---- banners beside the panels ---- */
 .rail {
-  width: 150px;
-  height: 340px;
+  width: 160px;
+  height: 375px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
