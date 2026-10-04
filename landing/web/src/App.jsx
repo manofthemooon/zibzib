@@ -37,23 +37,31 @@ export default function App() {
         </a>
       </div>
 
-      <section className="hero">
-        <h1 className="headline">
-          <em>Zap zup</em>, world.
-        </h1>
-        <p className="subhead">I do not zab blab blab your language yet.</p>
-      </section>
+      <div className="stage">
+        <div className="side-tag side-tag--left" aria-hidden="true">signal // 001</div>
 
-      <div className="main">
+        <div className="content-col">
+          <section className="hero">
+            <h1 className="headline">
+              <em>Zap zup</em>,<br />world.
+            </h1>
+            <p className="subhead">I do not zab blab blab your language yet.</p>
+          </section>
+
+          <div className="panels-group">
+            <TextPanel onSpeak={speak} />
+            <TweetPanel onSpeak={speak} />
+          </div>
+        </div>
+
         <div className="alien-stage">
           <AlienSpeaker active={isSpeaking} mouthOpen={mouthOpen} big />
           {caption && <div className="alien-caption">{caption}</div>}
         </div>
-        <div className="panels-group">
-          <TextPanel onSpeak={speak} />
-          <TweetPanel onSpeak={speak} />
-        </div>
+
         <Rail />
+
+        <div className="side-tag side-tag--right" aria-hidden="true">alien language lab</div>
       </div>
 
       <footer>
