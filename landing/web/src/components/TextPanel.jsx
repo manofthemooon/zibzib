@@ -6,7 +6,7 @@ import { validateEnglishOnly } from '../utils/validate.js';
 const MAX_LENGTH = 4000;
 
 export default function TextPanel({ onSpeak }) {
-  const [direction, setDirection] = useState('to_alien');
+  const [direction, setDirection] = useState('to_english');
   const [text, setText] = useState('');
   const [result, setResult] = useState('');
   const [error, setError] = useState(null);

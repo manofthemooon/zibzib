@@ -38,8 +38,6 @@ export default function App() {
       </div>
 
       <div className="stage">
-        <div className="side-tag side-tag--left" aria-hidden="true">signal // 001</div>
-
         <div className="content-col">
           <section className="hero">
             <h1 className="headline">
@@ -54,14 +52,18 @@ export default function App() {
           </div>
         </div>
 
-        <div className="alien-stage">
-          <AlienSpeaker active={isSpeaking} mouthOpen={mouthOpen} big />
-          {caption && <div className="alien-caption">{caption}</div>}
+        <div className="alien-row">
+          <div className="side-tag side-tag--left" aria-hidden="true">signal // 001</div>
+
+          <div className="alien-stage">
+            <AlienSpeaker active={isSpeaking} mouthOpen={mouthOpen} big />
+            {caption && <div className="alien-caption">{caption}</div>}
+          </div>
+
+          <div className="side-tag side-tag--right" aria-hidden="true">alien language lab</div>
         </div>
 
         <Rail />
-
-        <div className="side-tag side-tag--right" aria-hidden="true">alien language lab</div>
       </div>
 
       <footer>
