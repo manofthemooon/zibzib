@@ -670,7 +670,7 @@ footer::before {
   white-space: nowrap;
 }
 
-@media (max-width: 760px), (max-height: 700px) {
+@media (max-width: 760px) {
   html, body { height: auto; overflow-x: hidden; overflow-y: auto; }
   .app { height: auto; overflow: visible; }
 
