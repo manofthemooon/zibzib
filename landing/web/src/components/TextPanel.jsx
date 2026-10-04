@@ -51,7 +51,7 @@ export default function TextPanel({ onSpeak }) {
   }
 
   return (
-    <div className="panel">
+    <div className="panel panel--text">
       <h2>translate text</h2>
       <DirectionToggle value={direction} onChange={setDirection} />
       <div className="field">

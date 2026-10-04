@@ -43,7 +43,7 @@ export default function TweetPanel({ onSpeak }) {
   }
 
   return (
-    <div className="panel">
+    <div className="panel panel--tweet">
       <h2>translate tweet</h2>
       <input
         type="text"
