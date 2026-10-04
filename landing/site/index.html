@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zib zib translator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <div class="topnav">
+      <div class="brand">ZIB ZIB</div>
+      <a href="https://x.com/zibzibx" target="_blank" rel="noopener" class="cta-pill"><img src="img/x-logo.png" alt="" class="cta-icon">↗</a>
+    </div>
+
+    <div class="main">
+      <div class="panel">
+        <h2>translate text</h2>
+        <div class="toggle" id="direction-toggle">
+          <div class="slider"></div>
+          <div class="opt active" data-value="to_alien">EN → ALIEN</div>
+          <div class="opt" data-value="to_english">ALIEN → EN</div>
+        </div>
+        <textarea id="text-input" placeholder="type anything... (max 4000 chars)" maxlength="4000"></textarea>
+        <button onclick="translateText()">translate</button>
+        <div class="output" id="text-output"></div>
+      </div>
+
+      <div class="panel">
+        <h2>translate tweet</h2>
+        <input type="text" id="tweet-url" placeholder="https://x.com/user/status/...">
+        <button onclick="translateTweet()">translate</button>
+        <div class="output original" id="tweet-original"></div>
+        <div class="output" id="tweet-output"></div>
+      </div>
+
+      <div class="rail">
+        <div class="banner placeholder">
+          <div class="slot-label">banner 01</div>
+          <div>reserved</div>
+        </div>
+        <div class="banner house-ad">
+          <div class="slot-label">banner 02</div>
+          <div class="headline-sm">YOUR AD COULD BE HERE</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div>zib zib · plain mode</div>
+      <div>dictionary lookup only</div>
+    </footer>
+  </div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

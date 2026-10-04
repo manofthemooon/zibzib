@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zib zib translator</title>
+<style>
+  :root {
+    --green: #3ddc84;
+    --bg: #05070a;
+    --panel: #0d1210;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: radial-gradient(circle at 50% 0%, #0e1a12 0%, var(--bg) 60%);
+    color: var(--green);
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    letter-spacing: 4px;
+    text-shadow: 0 0 12px var(--green);
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    opacity: 0.6;
+    margin-bottom: 40px;
+    font-size: 14px;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid rgba(61, 220, 132, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(61, 220, 132, 0.08);
+  }
+  .panel h2 {
+    margin-top: 0;
+    font-size: 16px;
+    opacity: 0.8;
+  }
+  textarea, input[type=text] {
+    width: 100%;
+    background: #000;
+    color: var(--green);
+    border: 1px solid rgba(61, 220, 132, 0.4);
+    border-radius: 6px;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+  }
+  textarea { min-height: 100px; }
+  button {
+    margin-top: 10px;
+    background: transparent;
+    color: var(--green);
+    border: 1px solid var(--green);
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  button:hover {
+    background: var(--green);
+    color: #000;
+  }
+  .output {
+    margin-top: 14px;
+    white-space: pre-wrap;
+    border-top: 1px dashed rgba(61, 220, 132, 0.3);
+    padding-top: 10px;
+    min-height: 20px;
+    font-size: 15px;
+  }
+  .output.original {
+    opacity: 0.55;
+    font-size: 13px;
+  }
+  .error {
+    color: #ff5d5d;
+  }
+  .hint {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-top: 6px;
+  }
+  .direction-toggle {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    opacity: 0.85;
+  }
+  .direction-toggle label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <h1>ZIB ZIB</h1>
+  <div class="subtitle">text → alien / tweet link → alien</div>
+
+  <div class="container">
+    <div class="panel">
+      <h2>translate text</h2>
+      <div class="direction-toggle">
+        <label><input type="radio" name="direction" value="to_alien" checked> english → alien</label>
+        <label><input type="radio" name="direction" value="to_english"> alien → english</label>
+      </div>
+      <textarea id="text-input" placeholder="type anything..." maxlength="4000"></textarea>
+      <button onclick="translateText()">translate</button>
+      <div class="output" id="text-output"></div>
+      <div class="hint">max 4000 characters (X Premium / verified post limit)</div>
+    </div>
+
+    <div class="panel">
+      <h2>translate tweet (alien → english)</h2>
+      <input type="text" id="tweet-url" placeholder="https://x.com/user/status/1234567890">
+      <button onclick="translateTweet()">translate</button>
+      <div class="output original" id="tweet-original"></div>
+      <div class="output" id="tweet-output"></div>
+      <div class="hint">decodes alien-language tweets back to english (public tweets only, via Twitter's oEmbed endpoint)</div>
+    </div>
+  </div>
+
+<script>
+// Mirrors the server-side whitelist in translator.py - catches bad input
+// before it's even sent, so the server-side check is the real gate but the
+// user gets instant feedback instead of a round trip.
+const ALLOWED_CHARS_RE = /^[A-Za-z0-9\s.,!?;:'"()\-@#&%*+=/\[\]~]*$/;
+const MIXED_ALNUM_RE = /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9']+$/;
+
+function validateEnglishOnly(text) {
+  if (!ALLOWED_CHARS_RE.test(text)) {
+    return 'Разрешён только английский текст (латиница, цифры, обычная пунктуация).';
+  }
+  for (const word of text.split(/\s+/)) {
+    const core = word.replace(/^[^A-Za-z0-9']+|[^A-Za-z0-9']+$/g, '');
+    if (MIXED_ALNUM_RE.test(core)) {
+      return `Слово похоже не на настоящее английское слово: "${word}" (смешивает буквы и цифры).`;
+    }
+  }
+  return null;
+}
+
+async function translateText() {
+  const text = document.getElementById('text-input').value;
+  const direction = document.querySelector('input[name="direction"]:checked').value;
+  const out = document.getElementById('text-output');
+
+  const validationError = validateEnglishOnly(text);
+  if (validationError) {
+    out.textContent = validationError;
+    out.classList.add('error');
+    return;
+  }
+
+  out.textContent = '...';
+  try {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text, direction})
+    });
+    const data = await res.json();
+    out.textContent = data.translated || '';
+    out.classList.remove('error');
+  } catch (e) {
+    out.textContent = 'error: ' + e;
+    out.classList.add('error');
+  }
+}
+
+async function translateTweet() {
+  const url = document.getElementById('tweet-url').value;
+  const original = document.getElementById('tweet-original');
+  const out = document.getElementById('tweet-output');
+  original.textContent = '';
+  out.textContent = '...';
+  try {
+    const res = await fetch('/api/translate-tweet', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url})
+    });
+    const data = await res.json();
+    if (data.error) {
+      out.textContent = data.error;
+      out.classList.add('error');
+      return;
+    }
+    original.textContent = data.original;
+    out.textContent = data.translated;
+    out.classList.remove('error');
+  } catch (e) {
+    out.textContent = 'error: ' + e;
+    out.classList.add('error');
+  }
+}
+</script>
+</body>
+</html>

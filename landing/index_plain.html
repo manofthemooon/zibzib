@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>zib zib translator (plain)</title>
+<style>
+  :root {
+    --green: #3ddc84;
+    --green-dim: rgba(61, 220, 132, 0.4);
+    --bg: #05070a;
+    --panel: #0d1210;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+  }
+  body {
+    background: var(--bg);
+    color: var(--green);
+    font-family: 'Courier New', monospace;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 22px;
+    gap: 16px;
+  }
+
+  /* ---- pill nav ---- */
+  .topnav {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(61, 220, 132, 0.3);
+    border-radius: 999px;
+    padding: 10px 10px 10px 22px;
+    background: var(--panel);
+  }
+  .topnav .brand {
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-size: 14px;
+  }
+  .topnav .cta-pill {
+    background: var(--green);
+    color: #000;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 7px 16px;
+    border-radius: 999px;
+  }
+  .topnav .cta-pill:hover { background: #5be89c; }
+
+  /* ---- centered middle section ---- */
+  .main {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  .panel {
+    width: 300px;
+    height: 380px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--panel);
+    border: 1px solid rgba(61, 220, 132, 0.3);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .panel h2 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    opacity: 0.8;
+    flex: 0 0 auto;
+  }
+
+  /* ---- segmented toggle switch ---- */
+  .toggle {
+    flex: 0 0 auto;
+    position: relative;
+    display: flex;
+    border: 1px solid var(--green);
+    border-radius: 999px;
+    padding: 3px;
+    margin-bottom: 10px;
+    font-size: 10.5px;
+    user-select: none;
+  }
+  .toggle .slider {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    height: calc(100% - 6px);
+    background: var(--green);
+    border-radius: 999px;
+    transition: transform 0.25s ease;
+    z-index: 0;
+  }
+  .toggle.right .slider { transform: translateX(100%); }
+  .toggle .opt {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    text-align: center;
+    padding: 6px 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  .toggle .opt.active {
+    color: #000;
+    font-weight: bold;
+  }
+
+  textarea, input[type=text] {
+    width: 100%;
+    background: #000;
+    color: var(--green);
+    border: 1px solid rgba(61, 220, 132, 0.4);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 12px;
+    resize: none;
+  }
+  textarea {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  input[type=text] { flex: 0 0 auto; }
+  .panel button {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    margin-top: 8px;
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid var(--green);
+    background: transparent;
+    color: var(--green);
+    transition: all 0.15s;
+  }
+  .panel button:hover {
+    background: var(--green);
+    color: #000;
+  }
+  .output {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    margin-top: 8px;
+    white-space: pre-wrap;
+    border-top: 1px dashed rgba(61, 220, 132, 0.3);
+    padding-top: 7px;
+    font-size: 12px;
+  }
+  .output.original {
+    flex: 0 1 auto;
+    max-height: 50px;
+    opacity: 0.55;
+    font-size: 10.5px;
+  }
+  .error { color: #ff5d5d; }
+
+  /* ---- banners beside the panels ---- */
+  .rail {
+    width: 150px;
+    height: 380px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .banner {
+    flex: 1 1 0;
+    min-height: 0;
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+  .banner.placeholder {
+    border: 1px dashed var(--green-dim);
+    opacity: 0.6;
+  }
+  .banner.house-ad {
+    border: 1px solid rgba(61, 220, 132, 0.35);
+    background: rgba(61, 220, 132, 0.08);
+  }
+  .banner .slot-label {
+    opacity: 0.5;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .banner.house-ad .headline-sm {
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: 0 0 8px var(--green);
+  }
+
+  footer {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    opacity: 0.5;
+    letter-spacing: 1px;
+    padding: 0 6px;
+  }
+
+  @media (max-width: 760px), (max-height: 700px) {
+    html, body { height: auto; overflow: auto; }
+    .app { height: auto; }
+    .main { flex-direction: column; }
+    .rail { width: 300px; height: auto; flex-direction: row; }
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="topnav">
+      <div class="brand">ZIB ZIB</div>
+      <a href="https://twitter.com/zibzibx" target="_blank" rel="noopener" class="cta-pill">twitter ↗</a>
+    </div>
+
+    <div class="main">
+      <div class="panel">
+        <h2>translate text</h2>
+        <div class="toggle" id="direction-toggle">
+          <div class="slider"></div>
+          <div class="opt active" data-value="to_alien">EN → ALIEN</div>
+          <div class="opt" data-value="to_english">ALIEN → EN</div>
+        </div>
+        <textarea id="text-input" placeholder="type anything... (max 4000 chars)" maxlength="4000"></textarea>
+        <button onclick="translateText()">translate</button>
+        <div class="output" id="text-output"></div>
+      </div>
+
+      <div class="panel">
+        <h2>translate tweet</h2>
+        <input type="text" id="tweet-url" placeholder="https://x.com/user/status/...">
+        <button onclick="translateTweet()">translate</button>
+        <div class="output original" id="tweet-original"></div>
+        <div class="output" id="tweet-output"></div>
+      </div>
+
+      <div class="rail">
+        <div class="banner placeholder">
+          <div class="slot-label">banner 01</div>
+          <div>reserved</div>
+        </div>
+        <div class="banner house-ad">
+          <div class="slot-label">banner 02</div>
+          <div class="headline-sm">YOUR AD COULD BE HERE</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div>zib zib · plain mode</div>
+      <div>dictionary lookup only</div>
+    </footer>
+  </div>
+
+<script>
+// Mirrors the server-side whitelist in translator.py - catches bad input
+// before it's even sent, so the server-side check is the real gate but the
+// user gets instant feedback instead of a round trip.
+const ALLOWED_CHARS_RE = /^[A-Za-z0-9\s.,!?;:'"()\-@#&%*+=/\[\]~]*$/;
+const MIXED_ALNUM_RE = /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9']+$/;
+
+function validateEnglishOnly(text) {
+  if (!ALLOWED_CHARS_RE.test(text)) {
+    return 'Разрешён только английский текст (латиница, цифры, обычная пунктуация).';
+  }
+  for (const word of text.split(/\s+/)) {
+    const core = word.replace(/^[^A-Za-z0-9']+|[^A-Za-z0-9']+$/g, '');
+    if (MIXED_ALNUM_RE.test(core)) {
+      return `Слово похоже не на настоящее английское слово: "${word}" (смешивает буквы и цифры).`;
+    }
+  }
+  return null;
+}
+
+function typeText(el, text, speed) {
+  speed = speed || 10;
+  el.textContent = '';
+  let i = 0;
+  (function step() {
+    if (i <= text.length) {
+      el.textContent = text.slice(0, i);
+      i++;
+      setTimeout(step, speed);
+    }
+  })();
+}
+
+// ---- segmented direction toggle ----
+let currentDirection = 'to_alien';
+(function () {
+  const toggle = document.getElementById('direction-toggle');
+  const opts = toggle.querySelectorAll('.opt');
+  opts.forEach(function (opt) {
+    opt.addEventListener('click', function () {
+      opts.forEach(function (o) { o.classList.remove('active'); });
+      opt.classList.add('active');
+      currentDirection = opt.dataset.value;
+      toggle.classList.toggle('right', currentDirection === 'to_english');
+    });
+  });
+})();
+
+async function translateText() {
+  const text = document.getElementById('text-input').value;
+  const out = document.getElementById('text-output');
+
+  const validationError = validateEnglishOnly(text);
+  if (validationError) {
+    out.textContent = validationError;
+    out.classList.add('error');
+    return;
+  }
+
+  out.textContent = '...';
+  try {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text, direction: currentDirection})
+    });
+    const data = await res.json();
+    out.classList.remove('error');
+    typeText(out, data.translated || '');
+  } catch (e) {
+    out.textContent = 'error: ' + e;
+    out.classList.add('error');
+  }
+}
+
+async function translateTweet() {
+  const url = document.getElementById('tweet-url').value;
+  const original = document.getElementById('tweet-original');
+  const out = document.getElementById('tweet-output');
+  original.textContent = '';
+  out.textContent = '...';
+  try {
+    const res = await fetch('/api/translate-tweet', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url})
+    });
+    const data = await res.json();
+    if (data.error) {
+      out.textContent = data.error;
+      out.classList.add('error');
+      return;
+    }
+    out.classList.remove('error');
+    original.textContent = data.original;
+    typeText(out, data.translated);
+  } catch (e) {
+    out.textContent = 'error: ' + e;
+    out.classList.add('error');
+  }
+}
+</script>
+</body>
+</html>
