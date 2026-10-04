@@ -6,6 +6,7 @@ import { useCallback, useRef, useState } from 'react';
 export function useAlienSpeech() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [mouthOpen, setMouthOpen] = useState(false);
+  const [caption, setCaption] = useState('');
   const ctxRef = useRef(null);
   const timeoutsRef = useRef([]);
 
@@ -26,8 +27,19 @@ export function useAlienSpeech() {
     const gap = 0.05;
     const step = blipDuration + gap;
     const now = ctx.currentTime;
+    const totalMs = blips * step * 1000;
+    const words = text.split(/\s+/).filter(Boolean);
 
     setIsSpeaking(true);
+    setCaption('');
+    words.forEach((_, i) => {
+      const at = ((i + 1) / words.length) * totalMs;
+      timeoutsRef.current.push(
+        setTimeout(() => setCaption(words.slice(0, i + 1).join(' ')), at),
+      );
+    });
+    timeoutsRef.current.push(setTimeout(() => setCaption(''), totalMs + 1400));
+
     for (let i = 0; i < blips; i++) {
       const t = now + i * step;
       const osc = ctx.createOscillator();
@@ -56,5 +68,5 @@ export function useAlienSpeech() {
     );
   }, []);
 
-  return { speak, isSpeaking, mouthOpen };
+  return { speak, isSpeaking, mouthOpen, caption };
 }

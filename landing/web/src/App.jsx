@@ -5,7 +5,7 @@ import AlienSpeaker from './components/AlienSpeaker.jsx';
 import { useAlienSpeech } from './hooks/useAlienSpeech.js';
 
 export default function App() {
-  const { speak, isSpeaking, mouthOpen } = useAlienSpeech();
+  const { speak, isSpeaking, mouthOpen, caption } = useAlienSpeech();
 
   return (
     <div className="app">
@@ -47,6 +47,7 @@ export default function App() {
       <div className="main">
         <div className="alien-stage">
           <AlienSpeaker active={isSpeaking} mouthOpen={mouthOpen} big />
+          {caption && <div className="alien-caption">{caption}</div>}
         </div>
         <div className="panels-group">
           <TextPanel onSpeak={speak} />

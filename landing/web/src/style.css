@@ -207,10 +207,36 @@ a { color: inherit; text-decoration: none; }
 .alien-stage::before {
   content: '';
   position: absolute;
-  inset: -40px;
-  background: radial-gradient(circle, rgba(61, 220, 132, 0.18), transparent 70%);
-  filter: blur(10px);
+  inset: -60px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0, transparent 95px, rgba(61, 220, 132, 0.14) 96px, transparent 98px),
+    radial-gradient(circle, transparent 0, transparent 135px, rgba(61, 220, 132, 0.1) 136px, transparent 138px),
+    radial-gradient(circle, rgba(61, 220, 132, 0.18), transparent 70%);
   z-index: -1;
+}
+.alien-caption {
+  position: absolute;
+  top: 92px;
+  left: calc(100% + 16px);
+  width: 190px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green-dim);
+  animation: captionIn 0.2s ease both;
+  pointer-events: none;
+  white-space: normal;
+}
+.alien-caption::before {
+  content: '» ';
+  opacity: 0.6;
+}
+@keyframes captionIn {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 .panel {
@@ -546,8 +572,13 @@ footer::before {
   .topnav { border-radius: 0 0 16px 16px; }
   .hero { padding-top: 10px; }
   .main { flex-direction: column; }
-  .alien-stage { align-self: flex-start; }
+  .alien-stage { align-self: flex-start; flex-direction: column; align-items: flex-start; }
   .alien-speaker--big { width: 110px; height: 132px; }
+  .alien-caption {
+    position: static;
+    width: 260px;
+    margin-top: 8px;
+  }
   .panels-group { flex-direction: column; }
   .rail { width: 300px; height: auto; flex-direction: row; }
   .footer-wordmark { display: none; }
