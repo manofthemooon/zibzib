@@ -30,11 +30,10 @@ export default function App() {
           alien dictionary · plain mode
         </div>
         <h1 className="headline">
-          <em>Speak</em> alien.
+          <em>Zap zup</em>, world.
         </h1>
         <p className="subhead">
-          Dictionary-based translation between English and zib zib. No AI, no
-          invented words — just a straight lookup, both directions.
+          I do not zab blab blab your language yet — to be continued.
         </p>
       </section>
 
