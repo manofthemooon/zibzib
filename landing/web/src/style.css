@@ -146,7 +146,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   text-align: center;
   gap: 6px;
-  padding: 2px 16px 0;
+  padding: 34px 16px 0;
 }
 .hero .headline {
   margin: 0;
@@ -317,7 +317,7 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   background: var(--green);
   mix-blend-mode: color;
-  opacity: 0.75;
+  opacity: 0.35;
   pointer-events: none;
   -webkit-mask-image: url('/alien-photo.png');
   -webkit-mask-size: contain;
@@ -350,8 +350,8 @@ a { color: inherit; text-decoration: none; }
   to { transform: translateY(-2px); }
 }
 .alien-speaker--big {
-  width: 170px;
-  height: 370px;
+  width: 145px;
+  height: 315px;
 }
 
 /* ---- segmented toggle switch ---- */
