@@ -1,8 +1,10 @@
 // Small line-art alien that pops up and "talks" (mouth toggles open/closed)
 // in sync with the gibberish blips from useAlienSpeech.
-export default function AlienSpeaker({ active, mouthOpen }) {
+export default function AlienSpeaker({ active, mouthOpen, big }) {
   return (
-    <div className={`alien-speaker${active ? ' active' : ''}`}>
+    <div
+      className={`alien-speaker${active ? ' active' : ''}${big ? ' alien-speaker--big' : ''}`}
+    >
       <svg viewBox="0 0 100 120" className="alien-svg">
         <path d="M38 70 C28 86 28 97 40 106 L60 106 C72 97 72 86 62 70 Z" />
         <circle cx="50" cy="40" r="33" />

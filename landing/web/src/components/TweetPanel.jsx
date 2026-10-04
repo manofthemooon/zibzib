@@ -1,16 +1,13 @@
 import { useState } from 'react';
-import AlienSpeaker from './AlienSpeaker.jsx';
 import { useTypewriter } from '../hooks/useTypewriter.js';
-import { useAlienSpeech } from '../hooks/useAlienSpeech.js';
 
-export default function TweetPanel() {
+export default function TweetPanel({ onSpeak }) {
   const [url, setUrl] = useState('');
   const [original, setOriginal] = useState('');
   const [result, setResult] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const typed = useTypewriter(result);
-  const { speak, isSpeaking, mouthOpen } = useAlienSpeech();
 
   async function translate() {
     setOriginal('');
@@ -29,7 +26,7 @@ export default function TweetPanel() {
       } else {
         setOriginal(data.original);
         setResult(data.translated);
-        speak(data.translated || '');
+        onSpeak?.(data.translated || '');
       }
     } catch (e) {
       setError('error: ' + e);
@@ -47,7 +44,6 @@ export default function TweetPanel() {
 
   return (
     <div className="panel">
-      <AlienSpeaker active={isSpeaking} mouthOpen={mouthOpen} />
       <h2>translate tweet</h2>
       <input
         type="text"

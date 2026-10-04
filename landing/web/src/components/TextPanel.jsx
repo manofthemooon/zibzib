@@ -1,20 +1,17 @@
 import { useState } from 'react';
 import DirectionToggle from './DirectionToggle.jsx';
-import AlienSpeaker from './AlienSpeaker.jsx';
 import { useTypewriter } from '../hooks/useTypewriter.js';
-import { useAlienSpeech } from '../hooks/useAlienSpeech.js';
 import { validateEnglishOnly } from '../utils/validate.js';
 
 const MAX_LENGTH = 4000;
 
-export default function TextPanel() {
+export default function TextPanel({ onSpeak }) {
   const [direction, setDirection] = useState('to_alien');
   const [text, setText] = useState('');
   const [result, setResult] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const typed = useTypewriter(result);
-  const { speak, isSpeaking, mouthOpen } = useAlienSpeech();
 
   async function translate() {
     const validationError = validateEnglishOnly(text);
@@ -37,7 +34,7 @@ export default function TextPanel() {
         setError(data.error);
       } else {
         setResult(data.translated || '');
-        speak(data.translated || '');
+        onSpeak?.(data.translated || '');
       }
     } catch (e) {
       setError('error: ' + e);
@@ -55,7 +52,6 @@ export default function TextPanel() {
 
   return (
     <div className="panel">
-      <AlienSpeaker active={isSpeaking} mouthOpen={mouthOpen} />
       <h2>translate text</h2>
       <DirectionToggle value={direction} onChange={setDirection} />
       <div className="field">
