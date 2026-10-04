@@ -14,7 +14,6 @@ html, body {
   height: 100%;
   margin: 0;
   overflow: hidden;
-  overscroll-behavior: none;
 }
 body {
   background:
@@ -689,15 +688,30 @@ footer::before {
   .ambient-blob { opacity: 0.22; }
 
   .topnav { border-radius: 0 0 16px 16px; }
-  .stage { flex-direction: column; gap: 20px; }
+  .stage { flex-direction: column; gap: 10px; margin-top: -6px; }
   .content-col { order: 1; gap: 18px; }
   .content-col::after { display: none; }
   .hero { align-items: center; text-align: center; }
   .hero .subhead { padding-left: 0; }
   .hero .subhead::before { display: none; }
 
-  .alien-row { order: 0; align-self: center; justify-content: center; gap: 10px; }
-  .side-tag { font-size: 8px; opacity: 0.28; }
+  .alien-row {
+    order: 0;
+    align-self: stretch;
+    position: relative;
+    justify-content: center;
+    margin: 0 -22px;
+    padding: 0 20px;
+    gap: 0;
+  }
+  .side-tag {
+    position: absolute;
+    top: 50%;
+    font-size: 8px;
+    opacity: 0.28;
+  }
+  .side-tag--left { left: 10px; transform: translateY(-50%) rotate(180deg); }
+  .side-tag--right { right: 10px; transform: translateY(-50%); }
   .alien-stage {
     align-self: center;
     width: auto;
@@ -706,8 +720,11 @@ footer::before {
     justify-content: flex-start;
     padding-bottom: 0;
   }
-  .alien-stage::before { background: radial-gradient(circle at 50% 42%, rgba(61, 220, 132, 0.14), transparent 62%); }
-  .alien-speaker--big { width: 108px; height: 234px; }
+  .alien-stage::before {
+    inset: -30px;
+    background: radial-gradient(circle at 50% 42%, rgba(61, 220, 132, 0.14), transparent 62%);
+  }
+  .alien-speaker--big { width: 152px; height: 329px; }
   .alien-caption {
     position: static;
     transform: none;
