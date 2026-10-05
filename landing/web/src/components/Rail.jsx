@@ -10,13 +10,14 @@ export default function Rail() {
         <img
           src="/ad-cashback-zibzib.png"
           alt="Get 5% cashback with promo code ZIBZIB"
-          className="banner-img"
+          className="banner-img banner-img--mobile"
+        />
+        <img
+          src="/ad-cashback-zibzib-vertical.png"
+          alt="Get 5% cashback with promo code ZIBZIB"
+          className="banner-img banner-img--desktop"
         />
       </a>
-      <div className="banner house-ad">
-        <div className="slot-label">banner 02</div>
-        <div className="headline-sm">YOUR AD COULD BE HERE</div>
-      </div>
     </div>
   );
 }

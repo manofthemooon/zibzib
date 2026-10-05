@@ -628,7 +628,7 @@ input[type=text] { flex: 0 0 auto; }
 .rail {
   order: 3;
   width: 180px;
-  height: 300px;
+  height: auto;
   align-self: center;
   flex-shrink: 0;
   display: flex;
@@ -671,22 +671,6 @@ input[type=text] { flex: 0 0 auto; }
   background: linear-gradient(90deg, transparent, var(--green-dim), transparent);
   opacity: 0.6;
 }
-.banner.placeholder {
-  opacity: 0.45;
-}
-.banner.house-ad {
-  border-color: rgba(61, 220, 132, 0.4);
-  background: linear-gradient(165deg, rgba(61, 220, 132, 0.16), rgba(61, 220, 132, 0.03));
-  box-shadow: 0 0 24px rgba(61, 220, 132, 0.14) inset, 0 14px 34px rgba(0, 0, 0, 0.4);
-  animation: bannerGlow 3.5s ease-in-out infinite;
-}
-.banner .slot-label {
-  opacity: 0.5;
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-}
 .banner--ad {
   flex: 0 0 auto;
   aspect-ratio: 950 / 440;
@@ -702,15 +686,11 @@ input[type=text] { flex: 0 0 auto; }
   height: 100%;
   object-fit: contain;
 }
-.banner.house-ad .headline-sm {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 12px;
-  text-shadow: 0 0 10px var(--green);
-}
-@keyframes bannerGlow {
-  0%, 100% { box-shadow: 0 0 24px rgba(61, 220, 132, 0.14) inset, 0 14px 34px rgba(0, 0, 0, 0.4); }
-  50% { box-shadow: 0 0 34px rgba(61, 220, 132, 0.24) inset, 0 14px 34px rgba(0, 0, 0, 0.4); }
+.banner-img--desktop { display: none; }
+@media (min-width: 761px) {
+  .banner--ad { aspect-ratio: 2048 / 2922; }
+  .banner-img--mobile { display: none; }
+  .banner-img--desktop { display: block; }
 }
 
 footer {
@@ -844,10 +824,7 @@ footer::before {
     border-top: 1px dashed rgba(61, 220, 132, 0.25);
   }
   .rail { order: 2; width: 100%; height: auto; flex-direction: column; align-self: stretch; }
-  .banner { min-height: 108px; padding: 16px 16px; font-size: 11px; }
-  .banner--ad { min-height: 0; padding: 0; }
-  .banner .slot-label { font-size: 10px; margin-bottom: 6px; }
-  .banner.house-ad .headline-sm { font-size: 14px; }
+  .banner { min-height: 0; padding: 0; font-size: 11px; }
   .footer-wordmark { display: none; }
   .footer-row { flex-direction: column; gap: 4px; text-align: center; }
 }
