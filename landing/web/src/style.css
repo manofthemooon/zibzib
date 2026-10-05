@@ -316,8 +316,9 @@ a { color: inherit; text-decoration: none; }
 .panel {
   position: relative;
   width: 335px;
+  min-width: 0;
+  flex: 1 1 335px;
   height: 375px;
-  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   background:
