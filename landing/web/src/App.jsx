@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import TextPanel from './components/TextPanel.jsx';
 import TweetPanel from './components/TweetPanel.jsx';
 import Rail from './components/Rail.jsx';
 import AlienSpeaker from './components/AlienSpeaker.jsx';
 import { useAlienSpeech } from './hooks/useAlienSpeech.js';
+
+const CAPTION_POSITIONS = ['left', 'top', 'right'];
 
 // A handful of real dictionary words/phrases (see alien-dictionary.md), picked
 // for being short and fun, used to make the alien babble something on hover.
@@ -29,6 +32,12 @@ function randomAlienPhrase() {
 
 export default function App() {
   const { speak, isSpeaking, mouthOpen, caption } = useAlienSpeech();
+  const [captionPosition, setCaptionPosition] = useState('top');
+
+  function speakWithPosition(text) {
+    setCaptionPosition(CAPTION_POSITIONS[Math.floor(Math.random() * CAPTION_POSITIONS.length)]);
+    speak(text);
+  }
 
   return (
     <div className="app">
@@ -65,25 +74,30 @@ export default function App() {
           <section className="hero">
             <h1 className="headline">
               <em className="hello-swap">
-                <span className="hello-swap__default">Zap zup</span>
-                <span className="hello-swap__hover" aria-hidden="true">Hello</span>
-              </em>,<br />world.
+                <span className="hello-swap__default">Zap zup,</span>
+                <span className="hello-swap__hover" aria-hidden="true">Hello,</span>
+              </em><br />world.
             </h1>
             <p className="subhead">I do not zab blab blab your language yet.</p>
           </section>
 
           <div className="panels-group">
-            <TextPanel onSpeak={speak} />
-            <TweetPanel onSpeak={speak} />
+            <TextPanel onSpeak={speakWithPosition} />
+            <TweetPanel onSpeak={speakWithPosition} />
           </div>
         </div>
 
         <div className="alien-row">
           <div className="side-tag side-tag--left" aria-hidden="true">signal // 001</div>
 
-          <div className="alien-stage" onMouseEnter={() => speak(randomAlienPhrase())}>
-            <AlienSpeaker active={isSpeaking} mouthOpen={mouthOpen} big />
-            {caption && <div className="alien-caption">{caption}</div>}
+          <div className="alien-stage" onClick={() => speakWithPosition(randomAlienPhrase())}>
+            <AlienSpeaker
+              active={isSpeaking}
+              mouthOpen={mouthOpen}
+              big
+              caption={caption}
+              captionPosition={captionPosition}
+            />
           </div>
 
           <div className="side-tag side-tag--right" aria-hidden="true">alien language lab</div>

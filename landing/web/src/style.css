@@ -197,28 +197,24 @@ a { color: inherit; text-decoration: none; }
 .hello-swap__hover {
   display: block;
   white-space: nowrap;
-  transition: opacity 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+  transition: opacity 0.3s steps(6, jump-end), transform 0.3s steps(6, jump-end);
 }
 .hello-swap__hover {
   position: absolute;
   left: 0;
   top: 0;
   opacity: 0;
-  transform: translateY(8px);
-  filter: blur(5px);
   pointer-events: none;
 }
 @media (hover: hover) and (pointer: fine) {
   .hello-swap { cursor: pointer; }
   .hello-swap:hover .hello-swap__default {
     opacity: 0;
-    transform: translateY(-8px);
-    filter: blur(5px);
+    transform: translate(-3px, 2px);
   }
   .hello-swap:hover .hello-swap__hover {
     opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
+    transform: translate(2px, -2px);
   }
 }
 .hero .subhead {
@@ -277,6 +273,18 @@ a { color: inherit; text-decoration: none; }
 }
 .side-tag--left { transform: rotate(180deg); }
 
+/* ---- desktop only: pin both side-tags to the literal left edge of the
+   screen, stacked one above the other, instead of flanking the alien ---- */
+@media (min-width: 761px) {
+  .side-tag {
+    position: fixed;
+    left: 14px;
+    z-index: 2;
+  }
+  .side-tag--left { top: 38%; }
+  .side-tag--right { top: 60%; }
+}
+
 .content-col {
   position: relative;
   order: 1;
@@ -328,11 +336,7 @@ a { color: inherit; text-decoration: none; }
 }
 .alien-caption {
   position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
   width: 190px;
-  margin-bottom: 14px;
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.3px;
@@ -348,16 +352,36 @@ a { color: inherit; text-decoration: none; }
   content: '» ';
   opacity: 0.6;
 }
+.alien-caption--top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 14px;
+}
+.alien-caption--left {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 14px;
+  text-align: right;
+}
+.alien-caption--right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 14px;
+  text-align: left;
+}
 @keyframes captionIn {
-  from { opacity: 0; transform: translateX(-4px); }
-  to { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .panel {
   position: relative;
   width: 335px;
   min-width: 0;
-  flex: 1 1 335px;
+  flex: 0 1 335px;
   height: 375px;
   display: flex;
   flex-direction: column;
