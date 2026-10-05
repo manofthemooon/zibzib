@@ -452,6 +452,8 @@ a { color: inherit; text-decoration: none; }
   animation: alienBob 0.4s ease-in-out infinite alternate;
 }
 .alien-photo {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -460,6 +462,38 @@ a { color: inherit; text-decoration: none; }
   mix-blend-mode: screen;
   filter: grayscale(1) brightness(1.5) contrast(1.05)
     drop-shadow(0 0 20px rgba(61, 220, 132, 0.3));
+  transition: opacity 0.25s ease;
+}
+.alien-speaker--glitching .alien-photo {
+  opacity: 0;
+}
+.alien-glitch-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  mix-blend-mode: screen;
+  filter: grayscale(1) brightness(1.5) contrast(1.05)
+    drop-shadow(0 0 20px rgba(61, 220, 132, 0.3));
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  /* clip to the alien's own silhouette (same mask as the green tint overlay
+     below) so the video's own background never shows - only the glitch
+     texture inside the alien's shape is visible, keeping it blended into
+     the page instead of looking like a separate rectangular clip. */
+  -webkit-mask-image: url('/alien-photo.png');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url('/alien-photo.png');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+.alien-speaker--glitching .alien-glitch-video {
+  opacity: 1;
 }
 .alien-speaker::after {
   content: '';

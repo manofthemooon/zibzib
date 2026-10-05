@@ -33,6 +33,7 @@ function randomAlienPhrase() {
 export default function App() {
   const { speak, isSpeaking, mouthOpen, caption } = useAlienSpeech();
   const [captionPosition, setCaptionPosition] = useState('top');
+  const [glitchKey, setGlitchKey] = useState(0);
 
   function speakWithPosition(text) {
     // long captions (real translations, up to 150 chars) only have room to
@@ -43,6 +44,10 @@ export default function App() {
       : CAPTION_POSITIONS[Math.floor(Math.random() * CAPTION_POSITIONS.length)];
     setCaptionPosition(position);
     speak(text);
+    // short static/glitch flash on every alien interaction (click or
+    // translation) - independent of how long the reply takes to "speak",
+    // since the glitch is a brief decorative flash, not the talking itself.
+    setGlitchKey((k) => k + 1);
   }
 
   return (
@@ -103,6 +108,7 @@ export default function App() {
               big
               caption={caption}
               captionPosition={captionPosition}
+              glitchKey={glitchKey}
             />
           </div>
 
