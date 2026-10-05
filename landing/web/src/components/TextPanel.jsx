@@ -3,7 +3,7 @@ import DirectionToggle from './DirectionToggle.jsx';
 import { useTypewriter } from '../hooks/useTypewriter.js';
 import { validateEnglishOnly } from '../utils/validate.js';
 
-const MAX_LENGTH = 4000;
+const MAX_LENGTH = 150;
 
 export default function TextPanel({ onSpeak }) {
   const [direction, setDirection] = useState('to_english');
@@ -56,7 +56,7 @@ export default function TextPanel({ onSpeak }) {
       <DirectionToggle value={direction} onChange={setDirection} />
       <div className="field">
         <textarea
-          placeholder="type anything... (max 4000 chars)"
+          placeholder="type anything... (max 150 chars)"
           maxLength={MAX_LENGTH}
           value={text}
           onChange={(e) => setText(e.target.value)}

@@ -109,8 +109,8 @@ export default function App() {
       <footer>
         <div className="footer-wordmark" aria-hidden="true">ZIB ZIB</div>
         <div className="footer-row">
-          <div>zib zib · plain mode</div>
-          <div>dictionary lookup only</div>
+          <div>zib zib · mvp build</div>
+          <div>live translation engine</div>
         </div>
       </footer>
     </div>
