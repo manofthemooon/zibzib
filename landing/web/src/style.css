@@ -687,6 +687,16 @@ input[type=text] { flex: 0 0 auto; }
   margin-bottom: 4px;
   text-transform: uppercase;
 }
+.banner--ad {
+  padding: 0;
+  display: block;
+}
+.banner-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .banner.house-ad .headline-sm {
   font-family: var(--font-display);
   font-weight: 700;
