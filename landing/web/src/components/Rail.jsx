@@ -8,12 +8,12 @@ export default function Rail() {
         rel="noopener noreferrer"
       >
         <img
-          src="/ad-cashback-zibzib.png"
+          src="/ad-cashback-zibzib.jpg"
           alt="Get 5% cashback with promo code ZIBZIB"
           className="banner-img banner-img--mobile"
         />
         <img
-          src="/ad-cashback-zibzib-vertical.png"
+          src="/ad-cashback-zibzib-vertical.jpg"
           alt="Get 5% cashback with promo code ZIBZIB"
           className="banner-img banner-img--desktop"
         />
