@@ -688,8 +688,13 @@ input[type=text] { flex: 0 0 auto; }
   text-transform: uppercase;
 }
 .banner--ad {
+  flex: 0 0 auto;
+  aspect-ratio: 950 / 440;
+  height: auto;
   padding: 0;
   display: block;
+  background: #050706;
+  border-color: rgba(61, 220, 132, 0.15);
 }
 .banner-img {
   display: block;
@@ -840,6 +845,7 @@ footer::before {
   }
   .rail { order: 2; width: 100%; height: auto; flex-direction: column; align-self: stretch; }
   .banner { min-height: 108px; padding: 16px 16px; font-size: 11px; }
+  .banner--ad { min-height: 0; padding: 0; }
   .banner .slot-label { font-size: 10px; margin-bottom: 6px; }
   .banner.house-ad .headline-sm { font-size: 14px; }
   .footer-wordmark { display: none; }
