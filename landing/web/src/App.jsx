@@ -35,7 +35,13 @@ export default function App() {
   const [captionPosition, setCaptionPosition] = useState('top');
 
   function speakWithPosition(text) {
-    setCaptionPosition(CAPTION_POSITIONS[Math.floor(Math.random() * CAPTION_POSITIONS.length)]);
+    // long captions (real translations, up to 150 chars) only have room to
+    // flow above the alien - left/right flyouts that far wide would overlap
+    // the panels or the ad rail. Short alien-babble phrases can go anywhere.
+    const position = text.length > 40
+      ? 'top'
+      : CAPTION_POSITIONS[Math.floor(Math.random() * CAPTION_POSITIONS.length)];
+    setCaptionPosition(position);
     speak(text);
   }
 

@@ -285,8 +285,9 @@ a { color: inherit; text-decoration: none; }
   }
   .side-tag--left { top: 38%; }
   .side-tag--right { top: 60%; }
-  .content-col { padding-left: 56px; }
-  .alien-stage { margin-right: 56px; }
+  .content-col { padding-left: 100px; }
+  .alien-stage { margin-right: 140px; }
+  .output.original:empty { display: none; }
 }
 
 .content-col {
@@ -340,7 +341,7 @@ a { color: inherit; text-decoration: none; }
 }
 .alien-caption {
   position: absolute;
-  width: 190px;
+  width: 150px;
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.3px;
@@ -388,7 +389,7 @@ a { color: inherit; text-decoration: none; }
   width: 335px;
   min-width: 0;
   flex: 0 1 335px;
-  height: 375px;
+  height: 300px;
   display: flex;
   flex-direction: column;
   background:
@@ -626,8 +627,8 @@ input[type=text] { flex: 0 0 auto; }
 /* ---- banners beside the panels ---- */
 .rail {
   order: 3;
-  width: 140px;
-  height: 375px;
+  width: 180px;
+  height: 300px;
   align-self: center;
   flex-shrink: 0;
   display: flex;
