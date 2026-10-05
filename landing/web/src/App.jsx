@@ -4,6 +4,29 @@ import Rail from './components/Rail.jsx';
 import AlienSpeaker from './components/AlienSpeaker.jsx';
 import { useAlienSpeech } from './hooks/useAlienSpeech.js';
 
+// A handful of real dictionary words/phrases (see alien-dictionary.md), picked
+// for being short and fun, used to make the alien babble something on hover.
+const ALIEN_HOVER_PHRASES = [
+  'zap zup',
+  'zib zib',
+  'vip vop',
+  'zeb zep',
+  'zob zep',
+  'zup zib',
+  'zep zep',
+  'blab',
+  'zib',
+  'bleb bleb',
+  'zibzidi',
+  'zib zab zap',
+  'vop zun',
+  'zup blab',
+];
+
+function randomAlienPhrase() {
+  return ALIEN_HOVER_PHRASES[Math.floor(Math.random() * ALIEN_HOVER_PHRASES.length)];
+}
+
 export default function App() {
   const { speak, isSpeaking, mouthOpen, caption } = useAlienSpeech();
 
@@ -41,7 +64,10 @@ export default function App() {
         <div className="content-col">
           <section className="hero">
             <h1 className="headline">
-              <em>Zap zup</em>,<br />world.
+              <em className="hello-swap">
+                <span className="hello-swap__default">Zap zup</span>
+                <span className="hello-swap__hover" aria-hidden="true">Hello</span>
+              </em>,<br />world.
             </h1>
             <p className="subhead">I do not zab blab blab your language yet.</p>
           </section>
@@ -55,7 +81,7 @@ export default function App() {
         <div className="alien-row">
           <div className="side-tag side-tag--left" aria-hidden="true">signal // 001</div>
 
-          <div className="alien-stage">
+          <div className="alien-stage" onMouseEnter={() => speak(randomAlienPhrase())}>
             <AlienSpeaker active={isSpeaking} mouthOpen={mouthOpen} big />
             {caption && <div className="alien-caption">{caption}</div>}
           </div>

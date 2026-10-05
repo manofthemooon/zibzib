@@ -184,6 +184,43 @@ a { color: inherit; text-decoration: none; }
   color: #eafff2;
   text-shadow: 0 0 28px rgba(234, 255, 242, 0.6);
 }
+
+/* ---- "Zap zup" <-> "Hello" hover swap: the hover layer is absolutely
+   positioned so it never affects the box size of .hello-swap, meaning the
+   rest of the layout can never shift when the text swaps. ---- */
+.hello-swap {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+}
+.hello-swap__default,
+.hello-swap__hover {
+  display: block;
+  white-space: nowrap;
+  transition: opacity 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+}
+.hello-swap__hover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(5px);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hello-swap { cursor: pointer; }
+  .hello-swap:hover .hello-swap__default {
+    opacity: 0;
+    transform: translateY(-8px);
+    filter: blur(5px);
+  }
+  .hello-swap:hover .hello-swap__hover {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
 .hero .subhead {
   position: relative;
   margin: 2px 0 0;
@@ -285,6 +322,9 @@ a { color: inherit; text-decoration: none; }
   background: radial-gradient(circle at 50% 42%, rgba(61, 220, 132, 0.26), transparent 62%);
   filter: blur(6px);
   z-index: -1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .alien-stage { cursor: pointer; }
 }
 .alien-caption {
   position: absolute;
