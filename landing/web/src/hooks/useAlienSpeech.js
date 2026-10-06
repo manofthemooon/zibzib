@@ -1,11 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
 
 // Synthesizes short "alien gibberish" blips with the Web Audio API (no voice
-// recording/asset needed - it's generated on the fly) and reports back when
-// the mouth should be open/closed so a talking-alien animation can follow along.
+// recording/asset needed - it's generated on the fly) in sync with the
+// alien's own video clip, which already animates its mouth/eyes/glitches.
 export function useAlienSpeech() {
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [mouthOpen, setMouthOpen] = useState(false);
   const [caption, setCaption] = useState('');
   const ctxRef = useRef(null);
   const timeoutsRef = useRef([]);
@@ -52,21 +51,14 @@ export function useAlienSpeech() {
       osc.connect(gain).connect(ctx.destination);
       osc.start(t);
       osc.stop(t + blipDuration);
-
-      const openAt = i * step * 1000;
-      timeoutsRef.current.push(setTimeout(() => setMouthOpen(true), openAt));
-      timeoutsRef.current.push(
-        setTimeout(() => setMouthOpen(false), openAt + blipDuration * 1000),
-      );
     }
 
     timeoutsRef.current.push(
       setTimeout(() => {
         setIsSpeaking(false);
-        setMouthOpen(false);
       }, blips * step * 1000),
     );
   }, []);
 
-  return { speak, isSpeaking, mouthOpen, caption };
+  return { speak, isSpeaking, caption };
 }

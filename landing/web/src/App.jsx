@@ -31,9 +31,10 @@ function randomAlienPhrase() {
 }
 
 export default function App() {
-  const { speak, isSpeaking, mouthOpen, caption } = useAlienSpeech();
+  const { speak, isSpeaking, caption } = useAlienSpeech();
   const [captionPosition, setCaptionPosition] = useState('top');
   const [glitchKey, setGlitchKey] = useState(0);
+  const [replay, setReplay] = useState(false);
 
   function speakWithPosition(text) {
     // long captions (real translations, up to 150 chars) only have room to
@@ -44,9 +45,12 @@ export default function App() {
       : CAPTION_POSITIONS[Math.floor(Math.random() * CAPTION_POSITIONS.length)];
     setCaptionPosition(position);
     speak(text);
-    // short static/glitch flash on every alien interaction (click or
-    // translation) - independent of how long the reply takes to "speak",
-    // since the glitch is a brief decorative flash, not the talking itself.
+    // the alien clip is ~3s - for long replies that take longer than that to
+    // "speak", play it twice in a row instead of once so it doesn't go still
+    // while the gibberish/caption is still running.
+    setReplay(text.length >= 80);
+    // video plays on every alien interaction (click or translation) -
+    // independent of how long the reply takes to "speak".
     setGlitchKey((k) => k + 1);
   }
 
@@ -104,11 +108,11 @@ export default function App() {
           <div className="alien-stage" onClick={() => speakWithPosition(randomAlienPhrase())}>
             <AlienSpeaker
               active={isSpeaking}
-              mouthOpen={mouthOpen}
               big
               caption={caption}
               captionPosition={captionPosition}
               glitchKey={glitchKey}
+              replay={replay}
             />
           </div>
 
