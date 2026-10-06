@@ -790,6 +790,7 @@ footer::before {
      first in mobile's scroll order, so making it too tall pushes the
      actual translate panels further down the page. */
   .alien-speaker--big { width: 205px; height: 445px; }
+  .phone-viewer__stage { width: 205px; height: 422px; }
   .alien-caption {
     position: static;
     transform: none;
@@ -825,4 +826,67 @@ footer::before {
   .banner { min-height: 0; padding: 0; font-size: 11px; }
   .footer-wordmark { display: none; }
   .footer-row { flex-direction: column; gap: 4px; text-align: center; }
+}
+
+/* ---- phone drag-to-rotate prototype (dev stub, placeholder frames) ---- */
+.phone-viewer__stage {
+  position: relative;
+  /* matches the rendered photos' own aspect ratio (460x947) so nothing
+     letterboxes inside the stage. */
+  width: 300px;
+  height: 618px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  filter: drop-shadow(0 0 40px rgba(61, 220, 132, 0.18));
+}
+.phone-viewer__stage--dragging {
+  cursor: grabbing;
+}
+.phone-viewer__stage--active {
+  animation: alienBob 0.4s ease-in-out infinite alternate;
+}
+.phone-viewer__frames {
+  position: absolute;
+  inset: 0;
+}
+.phone-viewer__frames--animating .phone-viewer__frame {
+  transition: opacity 0.3s ease;
+}
+.phone-viewer__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+/* live screen content (alien video) - clipped to the phone's own organic
+   screen cutout via the alpha mask generated from the 0deg photo. Pinned
+   to the same box as the frames above, only visible while roughly facing
+   front (see isFront in the component). */
+.phone-viewer__screen-live {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  -webkit-mask-image: url('/phone-frames/phone_0_screen-mask.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url('/phone-frames/phone_0_screen-mask.png');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+.phone-viewer__screen-live--on {
+  opacity: 1;
+}
+.phone-viewer__screen-live video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: screen;
+  filter: grayscale(1) brightness(1.5) contrast(1.05);
 }

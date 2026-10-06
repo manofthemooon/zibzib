@@ -2,7 +2,7 @@ import { useState } from 'react';
 import TextPanel from './components/TextPanel.jsx';
 import TweetPanel from './components/TweetPanel.jsx';
 import Rail from './components/Rail.jsx';
-import AlienSpeaker from './components/AlienSpeaker.jsx';
+import PhoneViewer from './components/PhoneViewer.jsx';
 import { useAlienSpeech } from './hooks/useAlienSpeech.js';
 
 const CAPTION_POSITIONS = ['left', 'top', 'right'];
@@ -106,9 +106,8 @@ export default function App() {
           <div className="side-tag side-tag--left" aria-hidden="true">signal // 001</div>
 
           <div className="alien-stage" onClick={() => speakWithPosition(randomAlienPhrase())}>
-            <AlienSpeaker
+            <PhoneViewer
               active={isSpeaking}
-              big
               caption={caption}
               captionPosition={captionPosition}
               glitchKey={glitchKey}
